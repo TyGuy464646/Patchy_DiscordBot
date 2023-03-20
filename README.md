@@ -21,7 +21,7 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
+[![GNU General Public License v3.0][license-shield]][license-url]
 
 
 
@@ -139,7 +139,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the [GNU General Public License v3.0](https://github.com/TyGuy464646/TyLord_DiscordBot/blob/master/LICENSE). See `LICENSE.txt` for more information.
+Distributed under the [GNU General Public License v3.0](https://github.com/TyGuy464646/Patchy_DiscordBot/blob/master/LICENSE). See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -150,7 +150,7 @@ Distributed under the [GNU General Public License v3.0](https://github.com/TyGuy
 
 Tyler Eldred - Discord: TyGuy464646#0001
 
-Project Link: [https://github.com/TyGuy464646/TyLord_DiscordBot](https://github.com/TyGuy464646/TyLord_DiscordBot)
+Project Link: [https://github.com/TyGuy464646/Patchy_DiscordBot](https://github.com/TyGuy464646/Patchy_DiscordBot)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -174,15 +174,15 @@ Below are some resources that have been instrumental in making this project a re
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/TyGuy464646/TyLord_DiscordBot.svg?style=for-the-badge
-[contributors-url]: https://github.com/TyGuy464646/TyLord_DiscordBot/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/TyGuy464646/TyLord_DiscordBot.svg?style=for-the-badge
-[forks-url]: https://github.com/TyGuy464646/TyLord_DiscordBot/network/members
-[stars-shield]: https://img.shields.io/github/stars/TyGuy464646/TyLord_DiscordBot.svg?style=for-the-badge
-[stars-url]: https://github.com/TyGuy464646/TyLord_DiscordBot/stargazers
-[issues-shield]: https://img.shields.io/github/issues/TyGuy464646/TyLord_DiscordBot.svg?style=for-the-badge
-[issues-url]: https://github.com/TyGuy464646/TyLord_DiscordBot/issues
-[license-shield]: https://img.shields.io/github/license/TyGuy464646/TyLord_DiscordBot.svg?style=for-the-badge
-[license-url]: https://github.com/TyGuy464646/TyLord_DiscordBot/blob/master/LICENSE
+[contributors-shield]: https://img.shields.io/github/contributors/TyGuy464646/Patchy_DiscordBot.svg?style=for-the-badge
+[contributors-url]: https://github.com/TyGuy464646/Patchy_DiscordBot/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/TyGuy464646/Patchy_DiscordBot.svg?style=for-the-badge
+[forks-url]: https://github.com/TyGuy464646/Patchy_DiscordBot/network/members
+[stars-shield]: https://img.shields.io/github/stars/TyGuy464646/Patchy_DiscordBot.svg?style=for-the-badge
+[stars-url]: https://github.com/TyGuy464646/Patchy_DiscordBot/stargazers
+[issues-shield]: https://img.shields.io/github/issues/TyGuy464646/Patchy_DiscordBot.svg?style=for-the-badge
+[issues-url]: https://github.com/TyGuy464646/Patchy_DiscordBot/issues
+[license-shield]: https://img.shields.io/github/license/TyGuy464646/Patchy_DiscordBot.svg?style=for-the-badge
+[license-url]: https://github.com/TyGuy464646/Patchy_DiscordBot/blob/master/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/othneildrew
