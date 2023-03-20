@@ -27,6 +27,8 @@ public class NPC {
     // faction
     private String faction;
 
+    // TODO: Add attractiveness scale from 1/10
+
     // mug shot
     private String mugShot;
 
