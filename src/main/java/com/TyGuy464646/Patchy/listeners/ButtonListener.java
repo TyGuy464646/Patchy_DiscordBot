@@ -259,7 +259,7 @@ public class ButtonListener extends ListenerAdapter {
                     data.characterHandler.reset();
                     embed = EmbedUtils.createSuccess(systemName + " system was successfully reset!");
                 }
-                else embed = EmbedUtils.createError("Incorrect internal system name (fix the bot)");
+                else embed = EmbedUtils.createError("Invalid system name. Could not reset!");
                 // TODO: add more resets
 
                 event.getHook().editOriginalComponents(new ArrayList<>()).setEmbeds(embed).queue();

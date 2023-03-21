@@ -1,4 +1,4 @@
-package com.TyGuy464646.Patchy.data.cache.character;
+package com.TyGuy464646.Patchy.data.cache;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 

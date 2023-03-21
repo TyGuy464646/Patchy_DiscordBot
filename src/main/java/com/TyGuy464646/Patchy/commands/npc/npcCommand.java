@@ -4,7 +4,7 @@ import com.TyGuy464646.Patchy.Patchy;
 import com.TyGuy464646.Patchy.commands.Category;
 import com.TyGuy464646.Patchy.commands.Command;
 import com.TyGuy464646.Patchy.data.GuildData;
-import com.TyGuy464646.Patchy.data.cache.character.NPC;
+import com.TyGuy464646.Patchy.data.cache.NPC;
 import com.TyGuy464646.Patchy.handlers.CharacterHandler;
 import com.TyGuy464646.Patchy.listeners.ButtonListener;
 import com.TyGuy464646.Patchy.util.embeds.EmbedColor;
@@ -29,6 +29,8 @@ import java.util.List;
 
 /**
  * {@link Command} that adds/removes NPC characters from a database
+ *
+ * @author TyGuy464646
  */
 public class npcCommand extends Command {
 
@@ -40,7 +42,7 @@ public class npcCommand extends Command {
         this.name = "npc";
         this.description = "Add/Remove important NPCs.";
         this.category = Category.NPC;
-        this.permission = Permission.MANAGE_SERVER;
+        this.permission = Permission.MESSAGE_SEND;
 
         this.subCommands.add(new SubcommandData("create", "Create an NPC.")
                 .addOptions(
@@ -63,7 +65,6 @@ public class npcCommand extends Command {
                         new OptionData(OptionType.STRING, "name", "The name of the NPC you want info on.", true, true)
                 ));
         this.subCommands.add(new SubcommandData("list", "List all NPCs."));
-        this.subCommands.add(new SubcommandData("reset", "Resets the list of NPCs."));
     }
 
     @Override
@@ -138,12 +139,6 @@ public class npcCommand extends Command {
             }
             case "list" -> {
                 // TODO: Add sorting option, by name and by faction
-            }
-            case "reset" -> {
-                String text = "Would you like to reset the NPC system?\nThis will delete ALL data!";
-                WebhookMessageCreateAction<Message> action = event.getHook().sendMessageEmbeds(EmbedUtils.createDefault(text));
-
-                ButtonListener.sendResetMenu(event.getUser().getId(), "npc", action);
             }
         }
     }

@@ -1,7 +1,7 @@
 package com.TyGuy464646.Patchy.handlers;
 
 import com.TyGuy464646.Patchy.Patchy;
-import com.TyGuy464646.Patchy.data.cache.character.NPC;
+import com.TyGuy464646.Patchy.data.cache.NPC;
 import net.dv8tion.jda.api.entities.Guild;
 
 import java.util.ArrayList;

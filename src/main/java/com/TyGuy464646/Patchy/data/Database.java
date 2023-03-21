@@ -1,7 +1,7 @@
 package com.TyGuy464646.Patchy.data;
 
 import com.TyGuy464646.Patchy.data.cache.Config;
-import com.TyGuy464646.Patchy.data.cache.character.NPC;
+import com.TyGuy464646.Patchy.data.cache.NPC;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
