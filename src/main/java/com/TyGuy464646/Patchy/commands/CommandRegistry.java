@@ -3,6 +3,7 @@ package com.TyGuy464646.Patchy.commands;
 import com.TyGuy464646.Patchy.Patchy;
 import com.TyGuy464646.Patchy.commands.npc.npcCommand;
 import com.TyGuy464646.Patchy.commands.staff.resetCommand;
+import com.TyGuy464646.Patchy.commands.staff.setupCommand;
 import com.TyGuy464646.Patchy.commands.utility.AvatarCommand;
 import com.TyGuy464646.Patchy.commands.utility.EmbedCommand;
 import com.TyGuy464646.Patchy.commands.utility.HelpCommand;
@@ -55,6 +56,7 @@ public class CommandRegistry extends ListenerAdapter {
 
                 // Staff Commands
                 new resetCommand(bot),
+                new setupCommand(bot),
 
                 // Utility Commands
                 new AvatarCommand(bot),

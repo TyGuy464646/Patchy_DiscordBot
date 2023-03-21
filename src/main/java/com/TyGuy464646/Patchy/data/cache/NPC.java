@@ -37,10 +37,6 @@ public class NPC {
      */
     public NPC() {}
 
-    public NPC(long guild) {
-        this.guild = guild;
-    }
-
     /**
      * Constructor
      * @param guild Guild the NPC belongs to

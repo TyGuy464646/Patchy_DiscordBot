@@ -7,17 +7,25 @@ package com.TyGuy464646.Patchy.data.cache;
  */
 public class Config {
 
+    // ID of guild it belongs to
     private long guild;
 
-    public Config() {
+    // ID of channel that NPC's are sent to
+    private Long npcChannel;
 
-    }
+    // For POJO
+    public Config() {}
 
+    // Constructor
     public Config(long guild) {
         this.guild = guild;
+        this.npcChannel = null;
     }
 
     // Getters and Setters
     public long getGuild() { return guild; }
     public void setGuild(long guild) { this.guild = guild; }
+
+    public Long getNpcChannel() { return npcChannel; }
+    public void setNpcChannel(Long npcChannel) { this.npcChannel = npcChannel; }
 }

@@ -259,8 +259,11 @@ public class ButtonListener extends ListenerAdapter {
                     data.characterHandler.reset();
                     embed = EmbedUtils.createSuccess(systemName + " system was successfully reset!");
                 }
+                else if (systemName.equalsIgnoreCase("npc_channel")) {
+                    data.configHandler.resetNpcChannel();
+                    embed = EmbedUtils.createSuccess("The NPC text channel was successfully reset!");
+                }
                 else embed = EmbedUtils.createError("Invalid system name. Could not reset!");
-                // TODO: add more resets
 
                 event.getHook().editOriginalComponents(new ArrayList<>()).setEmbeds(embed).queue();
             }

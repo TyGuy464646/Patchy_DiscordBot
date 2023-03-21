@@ -96,6 +96,7 @@ Below is a list of the frameworks and libraries used to build TyLord.
 * [DotEnv](https://github.com/cdimascio/dotenv-java)
 * [Jackson JSON Parser](https://github.com/FasterXML/jackson)
 * [Logback Classic](https://mvnrepository.com/artifact/ch.qos.logback/logback-classic)
+* [Google GSON](https://github.com/google/gson)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

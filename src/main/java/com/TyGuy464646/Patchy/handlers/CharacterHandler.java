@@ -19,27 +19,18 @@ public class CharacterHandler {
 
     private final Guild guild;
     private final Patchy bot;
+
+    // NPC to be confirmed in /npc create
     private static NPC confirmNPC;
 
+    /**
+     * Constructor
+     * @param bot The bot
+     * @param guild The specific guild
+     */
     public CharacterHandler(Patchy bot, Guild guild) {
         this.guild = guild;
         this.bot = bot;
-    }
-
-    /**
-     * Adds an NPC to the list
-     * @param firstName First name of the NPC
-     * @param lastName Last name of the NPC
-     * @param description Description of the NPC
-     * @param faction Faction of the NPC
-     * @param mugShot Mugshot of the NPC
-     */
-    public void add(String firstName, String lastName, String description, String faction, String mugShot) {
-        // Update local cache
-        NPC newNPC = new NPC(guild.getIdLong(), firstName, lastName, description, faction, mugShot);
-
-        // Update database
-        bot.database.npc.insertOne(newNPC);
     }
 
     /**

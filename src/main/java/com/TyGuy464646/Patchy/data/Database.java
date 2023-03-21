@@ -44,7 +44,6 @@ public class Database {
         MongoDatabase database = mongoClient.getDatabase("Patchy");
 
         // Initialize collections if they don't exist
-        // TODO: Add more collections
         config = database.getCollection("config", Config.class);
         npc = database.getCollection("NPC", NPC.class);
 
