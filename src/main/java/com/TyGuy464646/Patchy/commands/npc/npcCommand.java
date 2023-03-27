@@ -49,11 +49,16 @@ public class npcCommand extends Command {
                         new OptionData(OptionType.STRING, "first_name", "The first name of the NPC", true),
                         new OptionData(OptionType.STRING, "last_name", "The last name of the NPC", true),
                         new OptionData(OptionType.STRING, "description", "The description of the NPC", true),
-                        new OptionData(OptionType.STRING, "gender", "The gender of the NPC"),
-                        new OptionData(OptionType.INTEGER, "age", "The age of the NPC"),
+                        new OptionData(OptionType.STRING, "gender", "The gender of the NPC")
+                                .addChoice("Male", "Male")
+                                .addChoice("Female", "Female"),
+                        new OptionData(OptionType.INTEGER, "age", "The age of the NPC")
+                                .setMinValue(1),
                         new OptionData(OptionType.STRING, "alignment", "The alignment of the NPC"),
                         new OptionData(OptionType.STRING, "faction", "The faction the NPC belongs to"),
-                        new OptionData(OptionType.INTEGER, "attractiveness", "The attractiveness of the NPC"),
+                        new OptionData(OptionType.INTEGER, "attractiveness", "The attractiveness of the NPC")
+                                .setMinValue(0)
+                                .setMaxValue(10),
                         new OptionData(OptionType.STRING, "mug_shot", "The mug shot of the NPC")
                 ));
         this.subCommands.add(new SubcommandData("edit", "Edit an existing NPC's info")
