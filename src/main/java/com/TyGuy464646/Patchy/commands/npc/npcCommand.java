@@ -110,6 +110,7 @@ public class npcCommand extends Command {
 
                 EmbedBuilder embedBuilder = new EmbedBuilder()
                         .setColor(EmbedColor.DEFAULT.color)
+                        .setAuthor("New NPC", "https://www.dndbeyond.com/classes", "https://cdn2.iconfinder.com/data/icons/material-set-2-1/48/145-512.png")
                         .setTitle(confirmNPC.getFirstName() + " " + confirmNPC.getLastName())
                         .setDescription("```ㅤ```")
                         .addField("Description", confirmNPC.getDescription(), false)
