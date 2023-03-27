@@ -40,6 +40,7 @@ public class ButtonListener extends ListenerAdapter {
     public static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(20);
 
     public static final Map<String, List<MessageEmbed>> menus = new HashMap<>();
+    public static final Map<String, List<List<MessageEmbed>>> embedMenus = new HashMap<>();
     public static final Map<String, List<Button>> buttons = new HashMap<>();
 
     /**
@@ -71,6 +72,25 @@ public class ButtonListener extends ListenerAdapter {
         List<Button> components = getPaginationButtons(uuid, embeds.size());
         buttons.put(uuid, components);
         menus.put(uuid, embeds);
+        action.addActionRow(components).queue(
+                interactionHook -> ButtonListener.disableButtons(uuid, interactionHook)
+        );
+    }
+
+    /**
+     * Adds pagination buttons to a deferred reply message action.
+     * @param userID the ID of the user who is accessing this menu.
+     * @param action The {@link WebhookMessageCreateAction} to add components to.
+     * @param pages The embed pages.
+     */
+    public static void sendEmbedPaginatedMenu(String userID, WebhookMessageCreateAction<Message> action, List<List<MessageEmbed>> pages) {
+        String uuid = userID + ":" + UUID.randomUUID();
+        List<Button> components = getEmbedPaginationButtons(uuid, pages.size());
+
+        // TODO: Add dropdown menu for selecting a NPC
+
+        buttons.put(uuid, components);
+        embedMenus.put(uuid, pages);
         action.addActionRow(components).queue(
                 interactionHook -> ButtonListener.disableButtons(uuid, interactionHook)
         );
@@ -121,6 +141,20 @@ public class ButtonListener extends ListenerAdapter {
     }
 
     /**
+     * Get a list of buttons for paginated embeds.
+     * @param uuid the unique ID generated for these buttons.
+     * @param size the total number of embed pages
+     * @return A list of components to use on a paginated embed
+     */
+    private static List<Button> getEmbedPaginationButtons(String uuid, int size) {
+        return Arrays.asList(
+                Button.primary("embedpagination:prev:" + uuid, "Previous").asDisabled(),
+                Button.of(ButtonStyle.SECONDARY, "pagination:page:0", "1/" + size).asDisabled(),
+                Button.primary("embedpagination:next:" + uuid, "Next")
+        );
+    }
+
+    /**
      * Get a list of buttons for reset embeds (selectable yes and no).
      *
      * @param uuid       The unique ID generated for these buttons.
@@ -164,6 +198,7 @@ public class ButtonListener extends ListenerAdapter {
 
             ButtonListener.buttons.remove(uuid);
             ButtonListener.menus.remove(uuid);
+            ButtonListener.embedMenus.remove(uuid);
         };
 
         ButtonListener.executor.schedule(task, MINUTES_TO_DISABLE, TimeUnit.MINUTES);
@@ -188,6 +223,7 @@ public class ButtonListener extends ListenerAdapter {
 
             ButtonListener.buttons.remove(uuid);
             ButtonListener.menus.remove(uuid);
+            ButtonListener.embedMenus.remove(uuid);
         };
 
         ButtonListener.executor.schedule(task, MINUTES_TO_DISABLE, TimeUnit.MINUTES);
@@ -242,6 +278,43 @@ public class ButtonListener extends ListenerAdapter {
                     // Edit components to new components and change embed
                     buttons.put(uuid, components);
                     event.editComponents(ActionRow.of(components)).setEmbeds(embeds.get(page)).queue();
+                }
+            }
+        }
+        // Embed Pagination
+        else if (pressedArgs[0].equals("embedpagination") && storedArgs[0].equals("embedpagination")) {
+            // If next button is pressed
+            if (pressedArgs[1].equals("next")) {
+                // Move to next embed
+                int page = Integer.parseInt(components.get(1).getId().split(":")[2]) + 1;
+                List<List<MessageEmbed>> pages = embedMenus.get(uuid);
+
+                if (page < pages.size()) {
+                    // Update buttons
+                    components.set(1, components.get(1).withId("embedpagination:page:" + page).withLabel((page + 1) + "/" + pages.size()));
+                    components.set(0, components.get(0).asEnabled());
+                    if (page == pages.size() - 1) components.set(2, components.get(2).asDisabled());
+
+                    // Edit components to new components and change embed
+                    buttons.put(uuid, components);
+                    event.editComponents(ActionRow.of(components)).setEmbeds(pages.get(page)).queue();
+                }
+            }
+            // If previous button is pressed
+            else if (pressedArgs[1].equals("prev")) {
+                // Move to previous embed
+                int page = Integer.parseInt(components.get(1).getId().split(":")[2]) - 1;
+                List<List<MessageEmbed>> pages = embedMenus.get(uuid);
+
+                if (page >= 0) {
+                    // Update buttons
+                    components.set(1, components.get(1).withId("embedpagination:page:" + page).withLabel((page + 1) + "/" + pages.size()));
+                    components.set(2, components.get(2).asEnabled());
+                    if (page == 0) components.set(0, components.get(0).asDisabled());
+
+                    // Edit components to new components and change embed
+                    buttons.put(uuid, components);
+                    event.editComponents(ActionRow.of(components)).setEmbeds(pages.get(page)).queue();
                 }
             }
         }

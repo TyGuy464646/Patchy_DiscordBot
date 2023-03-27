@@ -36,6 +36,8 @@ public class npcCommand extends Command {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(npcCommand.class);
 
+    private static final int EMBEDS_PER_PAGE = 4;
+
     public npcCommand(Patchy bot) {
         super(bot);
 
@@ -52,13 +54,10 @@ public class npcCommand extends Command {
                         new OptionData(OptionType.STRING, "gender", "The gender of the NPC")
                                 .addChoice("Male", "Male")
                                 .addChoice("Female", "Female"),
-                        new OptionData(OptionType.INTEGER, "age", "The age of the NPC")
-                                .setMinValue(1),
+                        new OptionData(OptionType.INTEGER, "age", "The age of the NPC"),
                         new OptionData(OptionType.STRING, "alignment", "The alignment of the NPC"),
                         new OptionData(OptionType.STRING, "faction", "The faction the NPC belongs to"),
-                        new OptionData(OptionType.INTEGER, "attractiveness", "The attractiveness of the NPC")
-                                .setMinValue(0)
-                                .setMaxValue(10),
+                        new OptionData(OptionType.INTEGER, "attractiveness", "The attractiveness of the NPC"),
                         new OptionData(OptionType.STRING, "mug_shot", "The mug shot of the NPC")
                 ));
         this.subCommands.add(new SubcommandData("edit", "Edit an existing NPC's info")
@@ -104,10 +103,10 @@ public class npcCommand extends Command {
                         lastName.getAsString(),
                         description.getAsString(),
 
-                        gender != null ? gender.getAsString() : "No Gender Given.",
+                        gender != null ? gender.getAsString() : "N/A",
                         age != null ? age.getAsInt() : -1,
-                        alignment != null ? alignment.getAsString() : "No Alignment Given.",
-                        faction != null ? faction.getAsString() : "No Faction Given.",
+                        alignment != null ? alignment.getAsString() : "N/A",
+                        faction != null ? faction.getAsString() : "N/A",
                         attractiveness != null ? attractiveness.getAsInt() : -1,
                         mugShot != null ? mugShot.getAsString() : null
                 );
@@ -119,19 +118,13 @@ public class npcCommand extends Command {
                         .setTitle(confirmNPC.getFirstName() + " " + confirmNPC.getLastName())
                         .setDescription("```ㅤ```")
                         .addField("Description", confirmNPC.getDescription(), false)
-                        .addField("Gender", confirmNPC.getGender(), true);
-
-                if (confirmNPC.getAge() != -1)
-                    embedBuilder.addField("Age", String.valueOf(confirmNPC.getAge()), true);
-                embedBuilder.addField("Alignment", confirmNPC.getAlignment(), true)
-                        .addField("Faction", confirmNPC.getFaction(), true);
-                if (confirmNPC.getAttractiveness() != -1)
-                    embedBuilder.addField("Attractiveness", String.valueOf(confirmNPC.getAttractiveness() + "/10"), true);
-                if (confirmNPC.getMugShot() != null)
-                    embedBuilder.setImage(confirmNPC.getMugShot());
-                if (confirmNPC.getAge() != -1 && confirmNPC.getAttractiveness() != -1) {
-                    embedBuilder.addField("", "", true);
-                }
+                        .addField("Gender", confirmNPC.getGender(), true)
+                        .addField("Age", confirmNPC.getAge() != -1 ? String.valueOf(confirmNPC.getAge()) : "N/A", true)
+                        .addField("Alignment", confirmNPC.getAlignment(), true)
+                        .addField("Faction", confirmNPC.getFaction(), true)
+                        .addField("Attractiveness", confirmNPC.getAttractiveness() != -1 ? String.valueOf(confirmNPC.getAttractiveness()) + "/10" : "N/A", true)
+                        .addField("", "", true)
+                        .setImage(confirmNPC.getMugShot());
 
                 MessageEmbed confirmEmbed = EmbedUtils.createDefault("Are you sure you want to add this NPC to the database?");
 
@@ -162,14 +155,38 @@ public class npcCommand extends Command {
                 EmbedBuilder embedBuilder = new EmbedBuilder()
                         .setColor(EmbedColor.DEFAULT.color)
                         .setTitle(infoNPC.getFirstName() + " " + infoNPC.getLastName())
+                        .setDescription("```ㅤ```")
                         .addField("Description", infoNPC.getDescription(), false)
-                        .addField("Faction", infoNPC.getFaction(), false)
+                        .addField("Gender", infoNPC.getGender(), true)
+                        .addField("Age", infoNPC.getAge() != -1 ? String.valueOf(infoNPC.getAge()) : "N/A", true)
+                        .addField("Alignment", infoNPC.getAlignment(), true)
+                        .addField("Faction", infoNPC.getFaction(), true)
+                        .addField("Attractiveness", infoNPC.getAttractiveness() != -1 ? String.valueOf(infoNPC.getAttractiveness()) + "/10" : "N/A", true)
+                        .addField("", "", true)
                         .setImage(infoNPC.getMugShot());
 
                 event.getHook().sendMessageEmbeds(embedBuilder.build()).queue();
             }
             case "list" -> {
-                // TODO: Add sorting option, by name and by faction
+                List<List<MessageEmbed>> pages = buildNPCMenu(characterHandler.getNPCs());
+
+                if (pages.isEmpty()) {
+                    // No NPCs
+                    EmbedBuilder embed = new EmbedBuilder()
+                            .setColor(EmbedColor.DEFAULT.color)
+                            .setTitle("NPCs")
+                            .setDescription("Coming soon...");
+                    event.getHook().sendMessageEmbeds(embed.build()).queue();
+                    return;
+                }
+
+                // Send paginated help menu
+                WebhookMessageCreateAction<Message> action = event.getHook().sendMessageEmbeds(pages.get(0));
+                if (pages.size() > 1) {
+                    ButtonListener.sendEmbedPaginatedMenu(event.getUser().getId(), action, pages);
+                    return;
+                }
+                action.queue();
             }
         }
     }
@@ -178,26 +195,49 @@ public class npcCommand extends Command {
     public void autoCompleteExecute(CommandAutoCompleteInteractionEvent event) {
         CharacterHandler characterHandler = GuildData.get(event.getGuild()).characterHandler;
 
-        if (event.getName().equals("npc") && event.getSubcommandName().equals("remove")) {
-            List<NPC> npcs = characterHandler.getNPCs();
+        if (event.getName().equals("npc")) {
+            if (event.getSubcommandName().equals("remove") || event.getSubcommandName().equals("info")) {
+                List<NPC> npcs = characterHandler.getNPCs();
 
-            List<Choice> choices = new ArrayList<>();
-            for (NPC npc : npcs) {
-                choices.add(new Choice(npc.getFirstName() + " " + npc.getLastName(), npc.getFirstName() + ":" + npc.getLastName()));
+                List<Choice> choices = new ArrayList<>();
+                for (NPC npc : npcs) {
+                    choices.add(new Choice(npc.getFirstName() + " " + npc.getLastName(), npc.getFirstName() + ":" + npc.getLastName()));
+                }
+
+                event.replyChoices(choices).queue();
             }
+        }
+    }
 
-            event.replyChoices(choices).queue();
+    /**
+     * Builds a list of pages for the NPC list.
+     *
+     * @param npcs The list of NPCs to build the pages from.
+     * @return A list of pages.
+     */
+    private List<List<MessageEmbed>> buildNPCMenu(List<NPC> npcs) {
+        List<List<MessageEmbed>> pages = new ArrayList<>();
+
+        List<MessageEmbed> page = new ArrayList<>();
+        for (int i = 0; i < npcs.size(); i++) {
+            NPC npc = npcs.get(i);
+
+            EmbedBuilder embedBuilder = new EmbedBuilder()
+                    .setColor(EmbedColor.DEFAULT.color)
+                    .setAuthor(npc.getFirstName() + " " + npc.getLastName())
+                    .addField("Gender", npc.getGender(), true)
+                    .addField("Age", npc.getAge() != -1 ? String.valueOf(npc.getAge()) : "N/A", true)
+                    .addField("Attractiveness", npc.getAttractiveness() != -1 ? String.valueOf(npc.getAttractiveness()) + "/10" : "N/A", true)
+                    .setThumbnail(npc.getMugShot());
+
+            page.add(embedBuilder.build());
+
+            if (page.size() == EMBEDS_PER_PAGE || i == npcs.size() - 1) {
+                pages.add(page);
+                page = new ArrayList<>();
+            }
         }
 
-        else if (event.getName().equals("npc") && event.getSubcommandName().equals("info")) {
-            List<NPC> npcs = characterHandler.getNPCs();
-
-            List<Choice> choices = new ArrayList<>();
-            for (NPC npc : npcs) {
-                choices.add(new Choice(npc.getFirstName() + " " + npc.getLastName(), npc.getFirstName() + ":" + npc.getLastName()));
-            }
-
-            event.replyChoices(choices).queue();
-        }
+        return pages;
     }
 }
