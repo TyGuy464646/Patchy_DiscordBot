@@ -24,10 +24,20 @@ public class NPC {
     // description
     private String description;
 
+    // gender
+    private String gender;
+
+    // age
+    private int age;
+
+    // allignment
+    private String alignment;
+
     // faction
     private String faction;
 
-    // TODO: Add attractiveness scale from 1/10
+    // attractiveness
+    private int attractiveness;
 
     // mug shot
     private String mugShot;
@@ -46,12 +56,16 @@ public class NPC {
      * @param faction Faction of the NPC
      * @param mugShot Mug shot of the NPC
      */
-    public NPC(long guild, String firstName, String lastName, String description, String faction, String mugShot) {
+    public NPC(long guild, String firstName, String lastName, String description, String gender, int age, String alignment, String faction, int attractiveness, String mugShot) {
         this.guild = guild;
         this.firstName = firstName;
         this.lastName = lastName;
         this.description = description;
+        this.gender = gender;
+        this.age = age;
+        this.alignment = alignment;
         this.faction = faction;
+        this.attractiveness = attractiveness;
         this.mugShot = mugShot;
     }
 
@@ -88,12 +102,44 @@ public class NPC {
         this.description = description;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getAlignment() {
+        return alignment;
+    }
+
+    public void setAlignment(String alignment) {
+        this.alignment = alignment;
+    }
+
     public String getFaction() {
         return faction;
     }
 
     public void setFaction(String faction) {
         this.faction = faction;
+    }
+
+    public int getAttractiveness() {
+        return attractiveness;
+    }
+
+    public void setAttractiveness(int attractiveness) {
+        this.attractiveness = attractiveness;
     }
 
     public String getMugShot() {

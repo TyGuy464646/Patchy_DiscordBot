@@ -49,7 +49,11 @@ public class npcCommand extends Command {
                         new OptionData(OptionType.STRING, "first_name", "The first name of the NPC", true),
                         new OptionData(OptionType.STRING, "last_name", "The last name of the NPC", true),
                         new OptionData(OptionType.STRING, "description", "The description of the NPC", true),
+                        new OptionData(OptionType.STRING, "gender", "The gender of the NPC"),
+                        new OptionData(OptionType.INTEGER, "age", "The age of the NPC"),
+                        new OptionData(OptionType.STRING, "alignment", "The alignment of the NPC"),
                         new OptionData(OptionType.STRING, "faction", "The faction the NPC belongs to"),
+                        new OptionData(OptionType.INTEGER, "attractiveness", "The attractiveness of the NPC"),
                         new OptionData(OptionType.STRING, "mug_shot", "The mug shot of the NPC")
                 ));
         this.subCommands.add(new SubcommandData("edit", "Edit an existing NPC's info")
@@ -80,7 +84,11 @@ public class npcCommand extends Command {
                 OptionMapping lastName = event.getOption("last_name");
                 OptionMapping description = event.getOption("description");
 
+                OptionMapping gender = event.getOption("gender");
+                OptionMapping age = event.getOption("age");
+                OptionMapping alignment = event.getOption("alignment");
                 OptionMapping faction = event.getOption("faction");
+                OptionMapping attractiveness = event.getOption("attractiveness");
                 OptionMapping mugShot = event.getOption("mug_shot");
 
                 // TODO: Send confirmation buttons if character wants to be added, THEN add to database
@@ -90,7 +98,12 @@ public class npcCommand extends Command {
                         firstName.getAsString(),
                         lastName.getAsString(),
                         description.getAsString(),
+
+                        gender != null ? gender.getAsString() : "No Gender Given.",
+                        age != null ? age.getAsInt() : -1,
+                        alignment != null ? alignment.getAsString() : "No Alignment Given.",
                         faction != null ? faction.getAsString() : "No Faction Given.",
+                        attractiveness != null ? attractiveness.getAsInt() : -1,
                         mugShot != null ? mugShot.getAsString() : null
                 );
                 characterHandler.setConfirmNPC(confirmNPC);
@@ -98,9 +111,21 @@ public class npcCommand extends Command {
                 EmbedBuilder embedBuilder = new EmbedBuilder()
                         .setColor(EmbedColor.DEFAULT.color)
                         .setTitle(confirmNPC.getFirstName() + " " + confirmNPC.getLastName())
+                        .setDescription("```ㅤ```")
                         .addField("Description", confirmNPC.getDescription(), false)
-                        .addField("Faction", confirmNPC.getFaction(), false)
-                        .setImage(confirmNPC.getMugShot());
+                        .addField("Gender", confirmNPC.getGender(), true);
+
+                if (confirmNPC.getAge() != -1)
+                    embedBuilder.addField("Age", String.valueOf(confirmNPC.getAge()), true);
+                embedBuilder.addField("Alignment", confirmNPC.getAlignment(), true)
+                        .addField("Faction", confirmNPC.getFaction(), true);
+                if (confirmNPC.getAttractiveness() != -1)
+                    embedBuilder.addField("Attractiveness", String.valueOf(confirmNPC.getAttractiveness() + "/10"), true);
+                if (confirmNPC.getMugShot() != null)
+                    embedBuilder.setImage(confirmNPC.getMugShot());
+                if (confirmNPC.getAge() != -1 && confirmNPC.getAttractiveness() != -1) {
+                    embedBuilder.addField("", "", true);
+                }
 
                 MessageEmbed confirmEmbed = EmbedUtils.createDefault("Are you sure you want to add this NPC to the database?");
 
