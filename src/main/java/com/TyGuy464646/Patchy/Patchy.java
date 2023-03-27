@@ -4,6 +4,7 @@ import com.TyGuy464646.Patchy.commands.CommandRegistry;
 import com.TyGuy464646.Patchy.data.Database;
 import com.TyGuy464646.Patchy.data.GuildData;
 import com.TyGuy464646.Patchy.listeners.ButtonListener;
+import com.TyGuy464646.Patchy.listeners.SelectionMenuListener;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -26,6 +27,7 @@ public class Patchy {
     public final @NotNull Database database;
 
     public final @NotNull ButtonListener buttonListener;
+    public final @NotNull SelectionMenuListener selectionMenuListener;
 
     public Patchy() throws LoginException {
         config = Dotenv.configure().ignoreIfMissing().load();
@@ -46,8 +48,10 @@ public class Patchy {
 
         // Register Listeners
         buttonListener = new ButtonListener();
+        selectionMenuListener = new SelectionMenuListener();
         shardManager.addEventListener(
-                buttonListener
+                buttonListener,
+                selectionMenuListener
         );
     }
 

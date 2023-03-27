@@ -6,7 +6,6 @@ import com.TyGuy464646.Patchy.util.embeds.EmbedUtils;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -14,6 +13,7 @@ import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
+import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.requests.restaction.WebhookMessageCreateAction;
 import net.dv8tion.jda.api.requests.restaction.interactions.ReplyCallbackAction;
@@ -87,13 +87,11 @@ public class ButtonListener extends ListenerAdapter {
         String uuid = userID + ":" + UUID.randomUUID();
         List<Button> components = getEmbedPaginationButtons(uuid, pages.size());
 
-        // TODO: Add dropdown menu for selecting a NPC
-
         buttons.put(uuid, components);
         embedMenus.put(uuid, pages);
-        action.addActionRow(components).queue(
-                interactionHook -> ButtonListener.disableButtons(uuid, interactionHook)
-        );
+
+        action.addActionRow(components);
+        SelectionMenuListener.sendNPCListMenu(uuid, action, pages);
     }
 
     /**
@@ -187,18 +185,13 @@ public class ButtonListener extends ListenerAdapter {
      */
     public static void disableButtons(String uuid, InteractionHook interactionHook) {
         Runnable task = () -> {
-            List<Button> actionRow = ButtonListener.buttons.get(uuid);
-            List<Button> newActionRow = new ArrayList<>();
-
-            for (Button button : actionRow) {
-                newActionRow.add(button.asDisabled());
-            }
-            interactionHook.editOriginalComponents(ActionRow.of(newActionRow))
+            interactionHook.editOriginalComponents(new ArrayList<>())
                     .queue(null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE));
 
             ButtonListener.buttons.remove(uuid);
             ButtonListener.menus.remove(uuid);
             ButtonListener.embedMenus.remove(uuid);
+            SelectionMenuListener.selectMenus.remove(uuid);
         };
 
         ButtonListener.executor.schedule(task, MINUTES_TO_DISABLE, TimeUnit.MINUTES);
@@ -212,18 +205,13 @@ public class ButtonListener extends ListenerAdapter {
      */
     public static void disableButtons(String uuid, Message hook) {
         Runnable task = () -> {
-            List<Button> actionRow = ButtonListener.buttons.get(uuid);
-            List<Button> newActionRow = new ArrayList<>();
-
-            for (Button button : actionRow) {
-                newActionRow.add(button.asDisabled());
-            }
-            hook.editMessageComponents(ActionRow.of(newActionRow))
+            hook.editMessageComponents(new ArrayList<>())
                     .queue(null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE));
 
             ButtonListener.buttons.remove(uuid);
             ButtonListener.menus.remove(uuid);
             ButtonListener.embedMenus.remove(uuid);
+            SelectionMenuListener.selectMenus.remove(uuid);
         };
 
         ButtonListener.executor.schedule(task, MINUTES_TO_DISABLE, TimeUnit.MINUTES);
@@ -241,6 +229,7 @@ public class ButtonListener extends ListenerAdapter {
         // Get other buttons
         String uuid = userID + ":" + pressedArgs[3];
         List<Button> components = buttons.get(uuid);
+        List<StringSelectMenu> selectMenus = SelectionMenuListener.getSelectMenus().get(uuid);
         if (components == null) return;
         String[] storedArgs = components.get(0).getId().split(":");
 
@@ -293,11 +282,16 @@ public class ButtonListener extends ListenerAdapter {
                     // Update buttons
                     components.set(1, components.get(1).withId("embedpagination:page:" + page).withLabel((page + 1) + "/" + pages.size()));
                     components.set(0, components.get(0).asEnabled());
+
                     if (page == pages.size() - 1) components.set(2, components.get(2).asDisabled());
 
                     // Edit components to new components and change embed
                     buttons.put(uuid, components);
-                    event.editComponents(ActionRow.of(components)).setEmbeds(pages.get(page)).queue();
+                    event.editComponents(
+                            ActionRow.of(components),
+                            ActionRow.of(selectMenus.get(page)))
+                            .setEmbeds(pages.get(page))
+                            .queue();
                 }
             }
             // If previous button is pressed
@@ -314,7 +308,11 @@ public class ButtonListener extends ListenerAdapter {
 
                     // Edit components to new components and change embed
                     buttons.put(uuid, components);
-                    event.editComponents(ActionRow.of(components)).setEmbeds(pages.get(page)).queue();
+                    event.editComponents(
+                            ActionRow.of(components),
+                            ActionRow.of(selectMenus.get(page)))
+                            .setEmbeds(pages.get(page))
+                            .queue();
                 }
             }
         }

@@ -112,27 +112,10 @@ public class npcCommand extends Command {
                 );
                 characterHandler.setConfirmNPC(confirmNPC);
 
-                EmbedBuilder embedBuilder = new EmbedBuilder()
-                        .setColor(EmbedColor.DEFAULT.color)
-                        .setAuthor("New NPC", "https://www.dndbeyond.com/classes", "https://cdn2.iconfinder.com/data/icons/material-set-2-1/48/145-512.png")
-                        .setTitle(confirmNPC.getFirstName() + " " + confirmNPC.getLastName())
-                        .setDescription("```ㅤ```")
-                        .addField("Description", confirmNPC.getDescription(), false)
-                        .addField("Gender", confirmNPC.getGender(), true)
-                        .addField("Age", confirmNPC.getAge() != -1 ? String.valueOf(confirmNPC.getAge()) : "N/A", true)
-                        .addField("Alignment", confirmNPC.getAlignment(), true)
-                        .addField("Faction", confirmNPC.getFaction(), true)
-                        .addField("Attractiveness", confirmNPC.getAttractiveness() != -1 ? String.valueOf(confirmNPC.getAttractiveness()) + "/10" : "N/A", true)
-                        .addField("", "", true)
-                        .setImage(confirmNPC.getMugShot());
-
-                MessageEmbed confirmEmbed = EmbedUtils.createDefault("Are you sure you want to add this NPC to the database?");
-
-                List<MessageEmbed> embedList = new ArrayList<>();
-                embedList.add(embedBuilder.build());
-                embedList.add(confirmEmbed);
-
-                WebhookMessageCreateAction<Message> action = event.getHook().sendMessageEmbeds(embedList);
+                WebhookMessageCreateAction<Message> action = event.getHook().sendMessageEmbeds(
+                        characterHandler.buildListEmbed(confirmNPC),
+                        EmbedUtils.createDefault("Are you sure you want to add this NPC to the database?")
+                );
                 ButtonListener.sendConfirmationMenu(event.getUser().getId(), "npc", action);
             }
             case "edit" -> {
@@ -152,20 +135,7 @@ public class npcCommand extends Command {
                 String[] firstLastName = name.getAsString().split(":");
                 NPC infoNPC = characterHandler.findNPCByFirstLastName(firstLastName[0], firstLastName[1]);
 
-                EmbedBuilder embedBuilder = new EmbedBuilder()
-                        .setColor(EmbedColor.DEFAULT.color)
-                        .setTitle(infoNPC.getFirstName() + " " + infoNPC.getLastName())
-                        .setDescription("```ㅤ```")
-                        .addField("Description", infoNPC.getDescription(), false)
-                        .addField("Gender", infoNPC.getGender(), true)
-                        .addField("Age", infoNPC.getAge() != -1 ? String.valueOf(infoNPC.getAge()) : "N/A", true)
-                        .addField("Alignment", infoNPC.getAlignment(), true)
-                        .addField("Faction", infoNPC.getFaction(), true)
-                        .addField("Attractiveness", infoNPC.getAttractiveness() != -1 ? String.valueOf(infoNPC.getAttractiveness()) + "/10" : "N/A", true)
-                        .addField("", "", true)
-                        .setImage(infoNPC.getMugShot());
-
-                event.getHook().sendMessageEmbeds(embedBuilder.build()).queue();
+                event.getHook().sendMessageEmbeds(characterHandler.buildListEmbed(infoNPC)).queue();
             }
             case "list" -> {
                 List<List<MessageEmbed>> pages = buildNPCMenu(characterHandler.getNPCs());
