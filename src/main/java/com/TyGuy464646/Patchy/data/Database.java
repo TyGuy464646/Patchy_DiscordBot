@@ -30,6 +30,7 @@ public class Database {
 
     /**
      * Connects to database using MongoDB URI and initialize any collections that don't exist
+     *
      * @param uri MongoDB uri string
      */
     public Database(String uri) {

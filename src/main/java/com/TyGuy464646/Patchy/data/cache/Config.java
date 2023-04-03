@@ -14,7 +14,8 @@ public class Config {
     private Long npcChannel;
 
     // For POJO
-    public Config() {}
+    public Config() {
+    }
 
     // Constructor
     public Config(long guild) {
@@ -23,9 +24,19 @@ public class Config {
     }
 
     // Getters and Setters
-    public long getGuild() { return guild; }
-    public void setGuild(long guild) { this.guild = guild; }
+    public long getGuild() {
+        return guild;
+    }
 
-    public Long getNpcChannel() { return npcChannel; }
-    public void setNpcChannel(Long npcChannel) { this.npcChannel = npcChannel; }
+    public void setGuild(long guild) {
+        this.guild = guild;
+    }
+
+    public Long getNpcChannel() {
+        return npcChannel;
+    }
+
+    public void setNpcChannel(Long npcChannel) {
+        this.npcChannel = npcChannel;
+    }
 }

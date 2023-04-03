@@ -27,6 +27,7 @@ public abstract class Command {
         this.subCommands = new ArrayList<>();
     }
 
-    public abstract  void execute(SlashCommandInteractionEvent event);
+    public abstract void execute(SlashCommandInteractionEvent event);
+
     public abstract void autoCompleteExecute(CommandAutoCompleteInteractionEvent event);
 }

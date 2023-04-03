@@ -6,7 +6,6 @@ import com.mongodb.client.model.Updates;
 import net.dv8tion.jda.api.entities.Guild;
 import org.bson.conversions.Bson;
 
-import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 
 /**
@@ -22,7 +21,8 @@ public class ConfigHandler {
 
     /**
      * Constructor
-     * @param bot The bot
+     *
+     * @param bot   The bot
      * @param guild The specific guild
      */
     public ConfigHandler(Patchy bot, Guild guild) {
@@ -39,6 +39,7 @@ public class ConfigHandler {
 
     /**
      * Gets the NPC channel for the guild.
+     *
      * @return The NPC channel ID
      */
     public Long getNpcChannel() {
@@ -49,6 +50,7 @@ public class ConfigHandler {
 
     /**
      * Sets the NPC channel for the guild.
+     *
      * @param channelID The channel ID
      */
     public void setNpcChannel(long channelID) {
@@ -66,6 +68,7 @@ public class ConfigHandler {
 
     /**
      * Checks if the NPC channel is set.
+     *
      * @return True if set, false if not
      */
     public boolean isNpcChannelSet() {

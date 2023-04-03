@@ -13,7 +13,6 @@ import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
-import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.requests.restaction.WebhookMessageCreateAction;
@@ -80,9 +79,10 @@ public class ButtonListener extends ListenerAdapter {
 
     /**
      * Adds pagination buttons to a deferred reply message action.
+     *
      * @param userID the ID of the user who is accessing this menu.
      * @param action The {@link WebhookMessageCreateAction} to add components to.
-     * @param pages The embed pages.
+     * @param pages  The embed pages.
      */
     public static void sendEmbedPaginatedMenu(String userID, WebhookMessageCreateAction<Message> action, List<List<MessageEmbed>> pages) {
         String uuid = userID + ":" + UUID.randomUUID();
@@ -113,6 +113,7 @@ public class ButtonListener extends ListenerAdapter {
 
     /**
      * Adds confirmation buttons to a deferred reply message action.
+     *
      * @param userID the ID of the user who is accessing this menu.
      * @param action The {@link WebhookMessageCreateAction} to add components to.
      */
@@ -127,6 +128,7 @@ public class ButtonListener extends ListenerAdapter {
 
     /**
      * Get a list of buttons for paginated embeds.
+     *
      * @param uuid the unique ID generated for these buttons.
      * @param size the total number of embed pages
      * @return A list of components to use on a paginated embed
@@ -141,6 +143,7 @@ public class ButtonListener extends ListenerAdapter {
 
     /**
      * Get a list of buttons for paginated embeds.
+     *
      * @param uuid the unique ID generated for these buttons.
      * @param size the total number of embed pages
      * @return A list of components to use on a paginated embed
@@ -169,6 +172,7 @@ public class ButtonListener extends ListenerAdapter {
 
     /**
      * Get a list of buttons for confirmation embeds (selectable yes and no).
+     *
      * @param uuid The unique ID generated for these buttons.
      * @return A list of components to use on a confirmation embed.
      */
@@ -181,7 +185,8 @@ public class ButtonListener extends ListenerAdapter {
 
     /**
      * Schedules a timer task to disable buttons and clear cache after a set time.
-     * @param uuid the uuid of the components to disable
+     *
+     * @param uuid            the uuid of the components to disable
      * @param interactionHook An {@link InteractionHook} pointing to original message
      */
     public static void disableButtons(String uuid, InteractionHook interactionHook) {
@@ -293,8 +298,8 @@ public class ButtonListener extends ListenerAdapter {
                     buttons.put(uuid, components);
                     SelectionMenuListener.getSelectMenu().put(uuid, selectMenu);
                     event.editComponents(
-                            ActionRow.of(components),
-                            ActionRow.of(selectMenu.get(page)))
+                                    ActionRow.of(components),
+                                    ActionRow.of(selectMenu.get(page)))
                             .setEmbeds(pages.get(page))
                             .queue();
                 }
@@ -314,8 +319,8 @@ public class ButtonListener extends ListenerAdapter {
                     // Edit components to new components and change embed
                     buttons.put(uuid, components);
                     event.editComponents(
-                            ActionRow.of(components),
-                            ActionRow.of(selectMenu.get(page)))
+                                    ActionRow.of(components),
+                                    ActionRow.of(selectMenu.get(page)))
                             .setEmbeds(pages.get(page))
                             .queue();
                 }
@@ -334,12 +339,10 @@ public class ButtonListener extends ListenerAdapter {
                 if (systemName.equalsIgnoreCase("npc_database")) {
                     data.characterHandler.reset();
                     embed = EmbedUtils.createSuccess("The NPC database system was successfully reset!");
-                }
-                else if (systemName.equalsIgnoreCase("npc_channel")) {
+                } else if (systemName.equalsIgnoreCase("npc_channel")) {
                     data.configHandler.resetNpcChannel();
                     embed = EmbedUtils.createSuccess("The NPC text channel was successfully reset!");
-                }
-                else embed = EmbedUtils.createError("Invalid system name. Could not reset!");
+                } else embed = EmbedUtils.createError("Invalid system name. Could not reset!");
 
                 event.getHook().editOriginalComponents(new ArrayList<>()).setEmbeds(embed).queue();
             }
@@ -363,8 +366,7 @@ public class ButtonListener extends ListenerAdapter {
                 if (systemName.equalsIgnoreCase("npc")) {
                     data.characterHandler.confirmNPC();
                     embed = EmbedUtils.createSuccess("Added NPC to the database!");
-                }
-                else embed = EmbedUtils.createError("Incorrect internal system name (fix the bot).");
+                } else embed = EmbedUtils.createError("Incorrect internal system name (fix the bot).");
 
                 event.getHook().editOriginalComponents(new ArrayList<>()).setEmbeds(embed).queue();
             }

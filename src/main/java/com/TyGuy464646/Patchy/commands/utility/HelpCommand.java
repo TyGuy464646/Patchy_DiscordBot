@@ -66,8 +66,7 @@ public class HelpCommand extends Command {
         OptionMapping commandOption = event.getOption("command");
         if (categoryOption != null && commandOption != null) {
             event.replyEmbeds(EmbedUtils.createError("Please only give one optional argument and try again.")).queue();
-        }
-        else if (categoryOption != null) {
+        } else if (categoryOption != null) {
             // Display category command menu
             Category category = Category.valueOf(categoryOption.getAsString().toUpperCase());
             List<MessageEmbed> embeds = buildCategoryMenu(category, categories.get(category));
@@ -89,8 +88,7 @@ public class HelpCommand extends Command {
                 return;
             }
             action.queue();
-        }
-        else if (commandOption != null) {
+        } else if (commandOption != null) {
             // Display command details menu
             Command cmd = CommandRegistry.commandsMap.get(commandOption.getAsString().toLowerCase());
 
@@ -108,14 +106,12 @@ public class HelpCommand extends Command {
                 embedBuilder.addField("Usage:", usages.toString(), false);
                 embedBuilder.addField("Permission: ", getPermission(cmd), false);
                 event.replyEmbeds(embedBuilder.build()).queue();
-            }
-            else
+            } else
                 // Command specified doesn't exist
                 event.replyEmbeds(
-                        EmbedUtils.createError("No command called \"" + commandOption.getAsString() + "\" found."))
+                                EmbedUtils.createError("No command called \"" + commandOption.getAsString() + "\" found."))
                         .queue();
-        }
-        else {
+        } else {
             // Display default menu
             embedBuilder.setTitle("Patchy Commands");
             categories.forEach((category, commands) -> {
@@ -128,10 +124,12 @@ public class HelpCommand extends Command {
     }
 
     @Override
-    public void autoCompleteExecute(CommandAutoCompleteInteractionEvent event) {}
+    public void autoCompleteExecute(CommandAutoCompleteInteractionEvent event) {
+    }
 
     /**
      * Builds a menu with all the commands in a specified category.
+     *
      * @param category The category to build a menu for
      * @param commands A list of the commands in the category
      * @return A list of {@link MessageEmbed} objects for pagination
@@ -153,8 +151,7 @@ public class HelpCommand extends Command {
                     embedBuilder.setDescription("");
                     counter = 0;
                 }
-            }
-            else {
+            } else {
                 for (SubcommandData sub : cmd.subCommands) {
                     embedBuilder.appendDescription("`" + getUsage(sub, cmd.name) + "`\n" + sub.getDescription() + "\n\n");
                     counter++;
@@ -221,6 +218,7 @@ public class HelpCommand extends Command {
 
     /**
      * Builds a string of permissions from command.
+     *
      * @param cmd the command to draw permissions from
      * @return A string of command permissions.
      */

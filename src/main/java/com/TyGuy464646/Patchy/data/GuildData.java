@@ -4,13 +4,9 @@ import com.TyGuy464646.Patchy.Patchy;
 import com.TyGuy464646.Patchy.handlers.CharacterHandler;
 import com.TyGuy464646.Patchy.handlers.ConfigHandler;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,6 +31,7 @@ public class GuildData {
 
     /**
      * Represents the local memory cache of guild data stored in the MongoDB databases.
+     *
      * @param guild
      */
     private GuildData(Guild guild) {
@@ -46,6 +43,7 @@ public class GuildData {
 
     /**
      * Removes a GuildSettings instance from settings {@link HashMap}.
+     *
      * @param guild
      */
     public static void removeGuild(@NotNull Guild guild) {
@@ -54,6 +52,7 @@ public class GuildData {
 
     /**
      * Retrieves the GuildSettings instance for a given guild. If it doesn't exist, it will create one.
+     *
      * @param guild the discord guild.
      * @return GuildSettings for specified guild.
      */
@@ -67,6 +66,7 @@ public class GuildData {
     /**
      * This should ask for the webserver to get or create a settings object. For testing purposes, this will
      * instantiate GuildData.
+     *
      * @param guild The guild to fetch from webserver for.
      * @return the guild data object for the newly created guild.
      */

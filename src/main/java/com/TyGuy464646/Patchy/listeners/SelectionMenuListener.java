@@ -41,9 +41,10 @@ public class SelectionMenuListener extends ListenerAdapter {
 
     /**
      * Adds selection menus to the NPC List command.
-     * @param uuid ID of the user
+     *
+     * @param uuid   ID of the user
      * @param action Action to send the message
-     * @param pages Pages of the message
+     * @param pages  Pages of the message
      */
     public static void sendNPCListMenu(String uuid, WebhookMessageCreateAction<Message> action, List<List<MessageEmbed>> pages) {
         // Components
@@ -76,6 +77,7 @@ public class SelectionMenuListener extends ListenerAdapter {
 
     /**
      * Disables menus after a certain amount of time.
+     *
      * @param uuid ID of the user
      * @param hook Message hook
      */

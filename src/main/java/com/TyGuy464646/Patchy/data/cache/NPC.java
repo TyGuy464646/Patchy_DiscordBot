@@ -1,10 +1,5 @@
 package com.TyGuy464646.Patchy.data.cache;
 
-import org.bson.codecs.pojo.annotations.BsonProperty;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * POJO object that represents an NPC.
  *
@@ -45,16 +40,18 @@ public class NPC {
     /**
      * For POJO
      */
-    public NPC() {}
+    public NPC() {
+    }
 
     /**
      * Constructor
-     * @param guild Guild the NPC belongs to
-     * @param firstName First name of the NPC
-     * @param lastName Last name of the NPC
+     *
+     * @param guild       Guild the NPC belongs to
+     * @param firstName   First name of the NPC
+     * @param lastName    Last name of the NPC
      * @param description Description of the NPC
-     * @param faction Faction of the NPC
-     * @param mugShot Mug shot of the NPC
+     * @param faction     Faction of the NPC
+     * @param mugShot     Mug shot of the NPC
      */
     public NPC(long guild, String firstName, String lastName, String description, String gender, int age, String alignment, String faction, int attractiveness, String mugShot) {
         this.guild = guild;

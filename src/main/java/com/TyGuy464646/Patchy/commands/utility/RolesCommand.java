@@ -6,12 +6,10 @@ import com.TyGuy464646.Patchy.commands.Category;
 import com.TyGuy464646.Patchy.commands.Command;
 import com.TyGuy464646.Patchy.util.embeds.EmbedColor;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
-import java.util.List;
 import java.util.Objects;
 
 /**

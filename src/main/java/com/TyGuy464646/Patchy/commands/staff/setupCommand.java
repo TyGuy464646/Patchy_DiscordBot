@@ -47,8 +47,7 @@ public class setupCommand extends Command {
                 if (configHandler.isNpcChannelSet()) {
                     event.getHook().sendMessageEmbeds(EmbedUtils.createError("NPC channel is already set! Use /reset to clear.")).queue();
                     return;
-                }
-                else {
+                } else {
                     configHandler.setNpcChannel(channel.getAsLong());
                     event.getHook().sendMessageEmbeds(EmbedUtils.createSuccess("NPC channel set!")).queue();
                 }
@@ -57,5 +56,6 @@ public class setupCommand extends Command {
     }
 
     @Override
-    public void autoCompleteExecute(CommandAutoCompleteInteractionEvent event) {}
+    public void autoCompleteExecute(CommandAutoCompleteInteractionEvent event) {
+    }
 }

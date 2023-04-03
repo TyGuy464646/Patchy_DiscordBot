@@ -68,6 +68,7 @@ public class CommandRegistry extends ListenerAdapter {
 
     /**
      * Adds a {@link Command} to the static list and map.
+     *
      * @param cmds a spread list of Command objects.
      */
     private void mapCommand(Command... cmds) {

@@ -23,6 +23,7 @@ public class EmbedUtils {
 
     /**
      * Quickly creates a simple error embed
+     *
      * @param errorMessage message to be displayed
      * @return completed {@link MessageEmbed}
      */
@@ -35,6 +36,7 @@ public class EmbedUtils {
 
     /**
      * Quickly creates a simple default embed
+     *
      * @param message message to be displayed
      * @return completed {@link MessageEmbed}
      */
@@ -47,6 +49,7 @@ public class EmbedUtils {
 
     /**
      * Quickly creates a simple success embed
+     *
      * @param message message to be displayed
      * @return completed {@link MessageEmbed}
      */
@@ -59,7 +62,8 @@ public class EmbedUtils {
 
     /**
      * Builds an embed for the NPC info command.
-     * @param infoNPC The NPC to build the embed for.
+     *
+     * @param infoNPC  The NPC to build the embed for.
      * @param isNewNPC Whether the NPC is new.
      * @return The built embed.
      */
@@ -73,7 +77,7 @@ public class EmbedUtils {
                 .addField("Age", infoNPC.getAge() != -1 ? String.valueOf(infoNPC.getAge()) : "N/A", true)
                 .addField("Alignment", infoNPC.getAlignment(), true)
                 .addField("Faction", infoNPC.getFaction(), true)
-                .addField("Attractiveness", infoNPC.getAttractiveness() != -1 ? String.valueOf(infoNPC.getAttractiveness()) + "/10" : "N/A", true)
+                .addField("Attractiveness", infoNPC.getAttractiveness() != -1 ? infoNPC.getAttractiveness() + "/10" : "N/A", true)
                 .addField("", "", true)
                 .setImage(infoNPC.getMugShot());
 
@@ -85,6 +89,7 @@ public class EmbedUtils {
 
     /**
      * Builds an embed for the NPC create menu.
+     *
      * @param step The step that the user is on.
      * @return The built embed.
      */

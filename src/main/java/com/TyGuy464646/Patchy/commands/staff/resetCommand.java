@@ -11,10 +11,10 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.Command.Choice;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import net.dv8tion.jda.api.interactions.commands.Command.Choice;
 import net.dv8tion.jda.api.requests.restaction.WebhookMessageCreateAction;
 
 /**
@@ -52,5 +52,6 @@ public class resetCommand extends Command {
     }
 
     @Override
-    public void autoCompleteExecute(CommandAutoCompleteInteractionEvent event) {}
+    public void autoCompleteExecute(CommandAutoCompleteInteractionEvent event) {
+    }
 }
