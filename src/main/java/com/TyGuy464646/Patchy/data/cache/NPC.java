@@ -30,7 +30,7 @@ public class NPC {
     // age
     private int age;
 
-    // allignment
+    // alignment
     private String alignment;
 
     // faction

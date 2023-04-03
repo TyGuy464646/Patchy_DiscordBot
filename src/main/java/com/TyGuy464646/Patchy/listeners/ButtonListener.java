@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
+import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.requests.restaction.WebhookMessageCreateAction;
@@ -35,7 +36,7 @@ public class ButtonListener extends ListenerAdapter {
     private static final Logger LOGGER = LoggerFactory.getLogger(ButtonListener.class);
 
     // Minutes until buttons are disabled
-    public static final int MINUTES_TO_DISABLE = 3;
+    public static final int MINUTES_TO_DISABLE = 5;
 
     public static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(20);
 
@@ -173,8 +174,8 @@ public class ButtonListener extends ListenerAdapter {
      */
     private static List<Button> getConfirmationButtons(String uuid, String systemName) {
         return Arrays.asList(
-                Button.success("confirm:yes:" + uuid + ":" + systemName, "Yes"),
-                Button.danger("confirm:no:" + uuid + ":" + systemName, "No")
+                Button.success("confirm:yes:" + uuid + ":" + systemName, "Yes, I'm sure"),
+                Button.danger("confirm:no:" + uuid + ":" + systemName, "No, go back")
         );
     }
 
@@ -191,7 +192,7 @@ public class ButtonListener extends ListenerAdapter {
             ButtonListener.buttons.remove(uuid);
             ButtonListener.menus.remove(uuid);
             ButtonListener.embedMenus.remove(uuid);
-            SelectionMenuListener.selectMenus.remove(uuid);
+            SelectionMenuListener.selectMenu.remove(uuid);
         };
 
         ButtonListener.executor.schedule(task, MINUTES_TO_DISABLE, TimeUnit.MINUTES);
@@ -211,7 +212,7 @@ public class ButtonListener extends ListenerAdapter {
             ButtonListener.buttons.remove(uuid);
             ButtonListener.menus.remove(uuid);
             ButtonListener.embedMenus.remove(uuid);
-            SelectionMenuListener.selectMenus.remove(uuid);
+            SelectionMenuListener.selectMenu.remove(uuid);
         };
 
         ButtonListener.executor.schedule(task, MINUTES_TO_DISABLE, TimeUnit.MINUTES);
@@ -229,7 +230,6 @@ public class ButtonListener extends ListenerAdapter {
         // Get other buttons
         String uuid = userID + ":" + pressedArgs[3];
         List<Button> components = buttons.get(uuid);
-        List<StringSelectMenu> selectMenus = SelectionMenuListener.getSelectMenus().get(uuid);
         if (components == null) return;
         String[] storedArgs = components.get(0).getId().split(":");
 
@@ -246,6 +246,9 @@ public class ButtonListener extends ListenerAdapter {
                     components.set(1, components.get(1).withId("pagination:page:" + page).withLabel((page + 1) + "/" + embeds.size()));
                     components.set(0, components.get(0).asEnabled());
                     if (page == embeds.size() - 1) components.set(2, components.get(2).asDisabled());
+
+                    // Update Selection Menu
+
 
                     // Edit components to new components and change embed
                     buttons.put(uuid, components);
@@ -272,6 +275,8 @@ public class ButtonListener extends ListenerAdapter {
         }
         // Embed Pagination
         else if (pressedArgs[0].equals("embedpagination") && storedArgs[0].equals("embedpagination")) {
+            List<StringSelectMenu> selectMenu = SelectionMenuListener.getSelectMenu().get(uuid);
+
             // If next button is pressed
             if (pressedArgs[1].equals("next")) {
                 // Move to next embed
@@ -282,14 +287,14 @@ public class ButtonListener extends ListenerAdapter {
                     // Update buttons
                     components.set(1, components.get(1).withId("embedpagination:page:" + page).withLabel((page + 1) + "/" + pages.size()));
                     components.set(0, components.get(0).asEnabled());
-
                     if (page == pages.size() - 1) components.set(2, components.get(2).asDisabled());
 
                     // Edit components to new components and change embed
                     buttons.put(uuid, components);
+                    SelectionMenuListener.getSelectMenu().put(uuid, selectMenu);
                     event.editComponents(
                             ActionRow.of(components),
-                            ActionRow.of(selectMenus.get(page)))
+                            ActionRow.of(selectMenu.get(page)))
                             .setEmbeds(pages.get(page))
                             .queue();
                 }
@@ -310,7 +315,7 @@ public class ButtonListener extends ListenerAdapter {
                     buttons.put(uuid, components);
                     event.editComponents(
                             ActionRow.of(components),
-                            ActionRow.of(selectMenus.get(page)))
+                            ActionRow.of(selectMenu.get(page)))
                             .setEmbeds(pages.get(page))
                             .queue();
                 }
@@ -326,9 +331,9 @@ public class ButtonListener extends ListenerAdapter {
                 GuildData data = GuildData.get(event.getGuild());
                 MessageEmbed embed = null;
 
-                if (systemName.equalsIgnoreCase("npc")) {
+                if (systemName.equalsIgnoreCase("npc_database")) {
                     data.characterHandler.reset();
-                    embed = EmbedUtils.createSuccess(systemName + " system was successfully reset!");
+                    embed = EmbedUtils.createSuccess("The NPC database system was successfully reset!");
                 }
                 else if (systemName.equalsIgnoreCase("npc_channel")) {
                     data.configHandler.resetNpcChannel();

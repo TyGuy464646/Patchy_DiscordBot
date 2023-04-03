@@ -32,7 +32,7 @@ public class resetCommand extends Command {
         this.permission = Permission.MANAGE_SERVER;
 
         this.args.add(new OptionData(OptionType.STRING, "system", "The system you wish to setup.", true).addChoices(
-                new Choice("NPC", "npc"),
+                new Choice("NPC Database", "npc_database"),
                 new Choice("NPC Channel", "npc_channel")
         ));
     }
@@ -45,7 +45,7 @@ public class resetCommand extends Command {
 
         OptionMapping system = event.getOption("system");
 
-        String text = "Would you like to reset the " + system.getName() + " system?\nThis will delete ALL data!";
+        String text = "Would you like to reset the " + system.getName().toLowerCase() + " system?\nThis will delete ALL data!";
         WebhookMessageCreateAction<Message> action = event.getHook().sendMessageEmbeds(EmbedUtils.createDefault(text));
 
         ButtonListener.sendResetMenu(event.getUser().getId(), system.getAsString(), action);

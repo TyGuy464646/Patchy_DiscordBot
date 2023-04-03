@@ -24,7 +24,7 @@ public class CharacterHandler {
     private final Patchy bot;
 
     // NPC to be confirmed in /npc create
-    private static NPC confirmNPC;
+    private NPC confirmNPC;
 
     /**
      * Constructor
@@ -96,28 +96,5 @@ public class CharacterHandler {
 
     public void resetConfirmNPC() {
         confirmNPC = null;
-    }
-
-    /**
-     * Builds an embed for the NPC list menu.
-     * @param infoNPC The NPC to build the embed for.
-     * @return The built embed.
-     */
-    public static MessageEmbed buildListEmbed(NPC infoNPC) {
-        MessageEmbed embed = new EmbedBuilder()
-                .setColor(EmbedColor.DEFAULT.color)
-                .setTitle(infoNPC.getFirstName() + " " + infoNPC.getLastName())
-                .setDescription("```ㅤ```")
-                .addField("Description", infoNPC.getDescription(), false)
-                .addField("Gender", infoNPC.getGender(), true)
-                .addField("Age", infoNPC.getAge() != -1 ? String.valueOf(infoNPC.getAge()) : "N/A", true)
-                .addField("Alignment", infoNPC.getAlignment(), true)
-                .addField("Faction", infoNPC.getFaction(), true)
-                .addField("Attractiveness", infoNPC.getAttractiveness() != -1 ? String.valueOf(infoNPC.getAttractiveness()) + "/10" : "N/A", true)
-                .addField("", "", true)
-                .setImage(infoNPC.getMugShot())
-                .build();
-
-        return embed;
     }
 }

@@ -60,10 +60,7 @@ public class npcCommand extends Command {
                         new OptionData(OptionType.INTEGER, "attractiveness", "The attractiveness of the NPC"),
                         new OptionData(OptionType.STRING, "mug_shot", "The mug shot of the NPC")
                 ));
-        this.subCommands.add(new SubcommandData("edit", "Edit an existing NPC's info")
-                .addOptions(
-                        new OptionData(OptionType.STRING, "name", "The name of the NPC you wish to edit.", true)
-                ));
+        this.subCommands.add(new SubcommandData("edit", "Edit an existing NPC's info"));
         this.subCommands.add(new SubcommandData("remove", "Remove an NPC from the list.")
                 .addOptions(
                         new OptionData(OptionType.STRING, "name", "The name of the NPC you wish to remove.", true, true)
@@ -113,7 +110,7 @@ public class npcCommand extends Command {
                 characterHandler.setConfirmNPC(confirmNPC);
 
                 WebhookMessageCreateAction<Message> action = event.getHook().sendMessageEmbeds(
-                        characterHandler.buildListEmbed(confirmNPC),
+                        EmbedUtils.createNPCInfo(confirmNPC, true),
                         EmbedUtils.createDefault("Are you sure you want to add this NPC to the database?")
                 );
                 ButtonListener.sendConfirmationMenu(event.getUser().getId(), "npc", action);
@@ -135,7 +132,7 @@ public class npcCommand extends Command {
                 String[] firstLastName = name.getAsString().split(":");
                 NPC infoNPC = characterHandler.findNPCByFirstLastName(firstLastName[0], firstLastName[1]);
 
-                event.getHook().sendMessageEmbeds(characterHandler.buildListEmbed(infoNPC)).queue();
+                event.getHook().sendMessageEmbeds(EmbedUtils.createNPCInfo(infoNPC, false)).queue();
             }
             case "list" -> {
                 List<List<MessageEmbed>> pages = buildNPCMenu(characterHandler.getNPCs());
