@@ -1,6 +1,7 @@
 package com.TyGuy464646.Patchy.commands;
 
 import com.TyGuy464646.Patchy.Patchy;
+import com.TyGuy464646.Patchy.commands.music.*;
 import com.TyGuy464646.Patchy.commands.npc.npcCommand;
 import com.TyGuy464646.Patchy.commands.staff.resetCommand;
 import com.TyGuy464646.Patchy.commands.staff.setupCommand;
@@ -51,6 +52,17 @@ public class CommandRegistry extends ListenerAdapter {
      */
     public CommandRegistry(Patchy bot) {
         mapCommand(
+                // Music Commands
+                new NowPlayingCommand(bot),
+                new PauseCommand(bot),
+                new PlayCommand(bot),
+                new QueueCommand(bot),
+                new RepeatCommand(bot),
+                new ResumeCommand(bot),
+                new SeekCommand(bot),
+                new StopCommand(bot),
+                new VolumeCommand(bot),
+
                 // NPC Commands
                 new npcCommand(bot),
 

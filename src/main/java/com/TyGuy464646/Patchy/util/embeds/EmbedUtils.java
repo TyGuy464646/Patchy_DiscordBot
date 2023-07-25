@@ -43,7 +43,7 @@ public class EmbedUtils {
     public static MessageEmbed createDefault(String message) {
         return new EmbedBuilder()
                 .setColor(EmbedColor.DEFAULT.color)
-                .setDescription("`" + message + "`")
+                .setDescription(message)
                 .build();
     }
 

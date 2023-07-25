@@ -4,6 +4,7 @@ import com.TyGuy464646.Patchy.commands.CommandRegistry;
 import com.TyGuy464646.Patchy.data.Database;
 import com.TyGuy464646.Patchy.data.GuildData;
 import com.TyGuy464646.Patchy.listeners.ButtonListener;
+import com.TyGuy464646.Patchy.listeners.MusicListener;
 import com.TyGuy464646.Patchy.listeners.SelectionMenuListener;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -27,6 +28,7 @@ public class Patchy {
     public final @NotNull Database database;
 
     public final @NotNull ButtonListener buttonListener;
+    public final @NotNull MusicListener musicListener;
     public final @NotNull SelectionMenuListener selectionMenuListener;
 
     public Patchy() throws LoginException {
@@ -48,9 +50,11 @@ public class Patchy {
 
         // Register Listeners
         buttonListener = new ButtonListener();
+        musicListener = new MusicListener(config.get("SPOTIFY_CLIENT_ID"), config.get("SPOTIFY_TOKEN"));
         selectionMenuListener = new SelectionMenuListener();
         shardManager.addEventListener(
                 buttonListener,
+                musicListener,
                 selectionMenuListener
         );
     }

@@ -3,6 +3,7 @@ package com.TyGuy464646.Patchy.data;
 import com.TyGuy464646.Patchy.Patchy;
 import com.TyGuy464646.Patchy.handlers.CharacterHandler;
 import com.TyGuy464646.Patchy.handlers.ConfigHandler;
+import com.TyGuy464646.Patchy.handlers.MusicHandler;
 import net.dv8tion.jda.api.entities.Guild;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,6 +28,7 @@ public class GuildData {
     // Local memory caches
     public ConfigHandler configHandler;
     public CharacterHandler characterHandler;
+    public MusicHandler musicHandler;
     // TODO: Add more memory caches
 
     /**
@@ -38,6 +40,7 @@ public class GuildData {
         // Setup caches
         configHandler = new ConfigHandler(bot, guild);
         characterHandler = new CharacterHandler(bot, guild);
+        musicHandler = null;
         //TODO: Setup more caches
     }
 
