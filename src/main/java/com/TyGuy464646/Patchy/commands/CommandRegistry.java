@@ -60,6 +60,7 @@ public class CommandRegistry extends ListenerAdapter {
                 new RepeatCommand(bot),
                 new ResumeCommand(bot),
                 new SeekCommand(bot),
+                new SkipCommand(bot),
                 new StopCommand(bot),
                 new VolumeCommand(bot),
 

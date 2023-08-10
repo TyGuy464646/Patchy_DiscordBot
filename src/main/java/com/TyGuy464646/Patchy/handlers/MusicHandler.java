@@ -20,7 +20,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.ByteBuffer;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.ListIterator;
+import java.util.Random;
 
 /**
  * Handles music for each guild with a unique queue and audio player for each.
@@ -47,6 +50,7 @@ public class MusicHandler implements AudioSendHandler {
 
     public MusicHandler(@NotNull AudioPlayer audioPlayer) {
         this.audioPlayer = audioPlayer;
+        this.audioPlayer.setVolume(10);
         this.queue = new LinkedList<>();
         this.isLoop = false;
         this.isSkip = false;
@@ -124,6 +128,13 @@ public class MusicHandler implements AudioSendHandler {
      * @return List of tracks in queue. Returns copy to avoid external modification.
      */
     public @NotNull LinkedList<AudioTrack> getQueue() { return new LinkedList<>(queue); }
+
+    /**
+     * Clears the queue.
+     */
+    public void clearQueue() { queue.subList(1, queue.size()).clear(); }
+
+    public void shuffle() { Collections.shuffle(queue.subList(1, queue.size())); }
 
     /**
      * Get the voice channel the bot is playing music in.

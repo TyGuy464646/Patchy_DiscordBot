@@ -40,7 +40,7 @@ public class VolumeCommand extends Command {
 
             music.setVolume(volume);
             String text = String.format(":loud_sound: Set the volume to `%s%%`", volume);
-            event.replyEmbeds(EmbedUtils.createDefault(text)).setEphemeral(true).queue();
+            event.replyEmbeds(EmbedUtils.createDefault(text)).queue();
             return;
         } catch (@NotNull NumberFormatException | ArrayIndexOutOfBoundsException ignored) {}
 

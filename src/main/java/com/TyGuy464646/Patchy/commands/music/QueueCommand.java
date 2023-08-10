@@ -11,10 +11,13 @@ import com.TyGuy464646.Patchy.util.embeds.EmbedUtils;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.requests.restaction.interactions.ReplyCallbackAction;
+import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
+import net.dv8tion.jda.api.requests.restaction.WebhookMessageCreateAction;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -34,25 +37,51 @@ public class QueueCommand extends Command {
         this.name = "queue";
         this.description = "Display the current queue of songs.";
         this.category = Category.MUSIC;
+        this.permission = Permission.MESSAGE_SEND;
+
+        this.subCommands.add(new SubcommandData("list", "Display the current queue of songs."));
+        this.subCommands.add(new SubcommandData("clear", "Clear the queue."));
+        this.subCommands.add(new SubcommandData("shuffle", "Shuffle the queue."));
     }
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
+        event.deferReply().queue();
         MusicHandler music = bot.musicListener.getMusic(event, true);
 
         // Check if queue is null or empty
         if (music == null || music.getQueue().isEmpty()) {
             String text = ":sound: There are no songs in the queue!";
-            event.replyEmbeds(EmbedUtils.createDefault(text)).queue();
+            event.getHook().sendMessageEmbeds(EmbedUtils.createDefault(text)).queue();
             return;
         }
 
-        // Create embeds and send to channel
-        List<MessageEmbed> embeds = buildQueueEmbeds(music.getQueue(), music.getQueue().size());
-        ReplyCallbackAction action = event.replyEmbeds(embeds.get(0));
-        if (embeds.size() > 1)
-            ButtonListener.sendPaginatedMenu(event.getUser().getId(), action, embeds);
-        else action.queue();
+        switch (event.getSubcommandName()) {
+            case "list" -> {
+                // Create embeds and send to channel
+                List<MessageEmbed> embeds = buildQueueEmbeds(music.getQueue(), music.getQueue().size());
+                WebhookMessageCreateAction<Message> action = event.getHook().sendMessageEmbeds(embeds.get(0));
+                if (embeds.size() > 1)
+                    ButtonListener.sendPaginatedMenu(event.getUser().getId(), action, embeds);
+                else action.queue();
+            }
+            case "clear" -> {
+                int total = music.getQueue().size();
+                music.clearQueue();
+
+                String text = total + " song";
+                if (total > 1) text += "s";
+                text += " cleared from the queue!";
+
+                event.getHook().sendMessageEmbeds(EmbedUtils.createSuccess(text)).queue();
+            }
+            case "shuffle" -> {
+                music.shuffle();
+
+                String text = "The queue has been shuffled!";
+                event.getHook().sendMessageEmbeds(EmbedUtils.createSuccess(text)).queue();
+            }
+        }
     }
 
     @Override

@@ -177,8 +177,8 @@ public class MusicListener extends ListenerAdapter {
                 event.reply(":notes: | Added **" + audioPlaylist.getName() + "** with `" + total + "` songs to the queue.").queue();
 
                 total = music.getQueue().size();
-                for (AudioTrack track: audioPlaylist.getTracks()) {
-                    if (total > 100) {
+                for (AudioTrack track : audioPlaylist.getTracks()) {
+                    if (total < 100) {
                         music.enqueue(track);
                     }
                     total++;
